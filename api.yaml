@@ -1,0 +1,198 @@
+openapi: 3.0.0
+info:
+  title: Quiz App API
+  description: API for managing users, subjects, chapters, quizzes, questions, and scores.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Local development server
+
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                fullname:
+                  type: string
+                qualification:
+                  type: string
+                dob:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully
+
+  /login:
+    post:
+      summary: Authenticate user and return JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful, returns JWT token
+
+  /subjects:
+    get:
+      summary: Get all subjects
+      responses:
+        '200':
+          description: List of subjects
+    post:
+      summary: Create a new subject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: Subject created successfully
+
+  /subjects/{subject_id}/chapters:
+    get:
+      summary: Get all chapters of a subject
+      parameters:
+        - name: subject_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of chapters
+    post:
+      summary: Create a new chapter
+      parameters:
+        - name: subject_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Chapter created successfully
+
+  /Quizzs:
+    get:
+      summary: Get all quizzes
+      responses:
+        '200':
+          description: List of quizzes
+    post:
+      summary: Create a new quiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                chapter_id:
+                  type: integer
+                date:
+                  type: string
+                duration:
+                  type: integer
+      responses:
+        '201':
+          description: Quiz created successfully
+
+  /questions:
+    get:
+      summary: Get all questions
+      responses:
+        '200':
+          description: List of questions
+    post:
+      summary: Add a new question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                text:
+                  type: string
+                quiz_id:
+                  type: integer
+                option_a:
+                  type: string
+                option_b:
+                  type: string
+                option_c:
+                  type: string
+                option_d:
+                  type: string
+                correct_option:
+                  type: string
+      responses:
+        '201':
+          description: Question added successfully
+
+  /scores:
+    get:
+      summary: Get user scores
+      responses:
+        '200':
+          description: List of user scores
+    post:
+      summary: Submit a quiz score
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                quiz_id:
+                  type: integer
+                score:
+                  type: integer
+                total_questions:
+                  type: integer
+      responses:
+        '201':
+          description: Score submitted successfully
